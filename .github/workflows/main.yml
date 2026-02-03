@@ -1,0 +1,33 @@
+name: macOS Build (QMake)
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v4
+
+      - name: Installazione Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.6.2' # Puoi cambiarla con la versione che preferisci
+          target: 'desktop'
+          # L'azione configura automaticamente qmake nel PATH
+
+      - name: Compilazione con QMake
+        run: |
+          qmake ./*.pro
+          make
+
+      - name: Creazione pacchetto DMG
+        run: |
+          # Cerca l'app generata e usa macdeployqt per creare il DMG
+          APP_NAME=$(find . -name "*.app" -maxdepth 1)
+          macdeployqt "$APP_NAME" -dmg
+
+      - name: Salvataggio Risultato
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-Application
+          path: ./*.dmg
