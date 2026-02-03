@@ -264,7 +264,7 @@ bool MainWindow::searchTopicInFile(QFile *file, const QString &topic)
     }
     file->open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in(file);
-    in.setCodec("UTF-8");
+    // in.setCodec("UTF-8");
     QString strFile = in.readAll();
     if ( strFile.contains(topic, Qt::CaseInsensitive) )
     {
@@ -316,7 +316,7 @@ void MainWindow::deleteTopicFromFile(const QString &topic)
 void MainWindow::addTopicToFile(QFile *file, const QString &topic)
 {
     QTextStream out(file);
-    out.setCodec("UTF-8");
+    // out.setCodec("UTF-8");
     out << QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm:ss - ");
     out << topic << "\n";
     out.flush();
